@@ -11,12 +11,14 @@ cd .. # back to build_all
 DESTDIR="/usr/local"
 rm -rf $DESTDIR/include/simavr
 rm -rf $DESTDIR/lib/libsimavr.a
-rm -rf $DESTDIR/pkgconfig/simavr-avr.pc
+rm -rf $DESTDIR/lib/pkgconfig/simavr-avr.pc
+rm -rf $DESTDIR/lib/pkgconfig/simavr.pc
 rm -rf $DESTDIR/bin/simavr
 
 # remove tty0tty
 rm -rf /usr/local/bin/tty0tty
 
+cd .. # back to main
 # uninstall picsimlab
 cd src
 make uninstall

@@ -122,13 +122,20 @@ cl pwd
 cd ../ # back to main
 cl pwd
 cd src
-cl make clean;make -j$(sysctl -n hw.ncpu) -f Makefile.static
-cl make install_app
+cl make clean;make -j$(sysctl -n hw.ncpu) -f Makefile.static install_app
+#cl make install_app
 cl pwd
 cd ../ # back to main
 # compile tools
-cl make clean; make -j$(sysctl -n hw.ncpu)
-cl make install_app
+cd tools
+cd PinViewer/
+cl make clean; make -j$(sysctl -n hw.ncpu) -f Makefile.static install_app
+cd ../espmsim/
+cl make clean; make -j$(sysctl -n hw.ncpu) -f Makefile.static install_app
+cd ../srtank/
+cl make clean; make -j$(sysctl -n hw.ncpu) -f Makefile.static install_app
+cd ..
+#cl make install_app
 cl pwd
 #cl make install
 #user=`whoami`

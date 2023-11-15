@@ -2,7 +2,8 @@ include ../../VERSION
 
 CC = g++
 
-prefix=$(DESTDIR)/usr
+DESTDIR ?= ""
+prefix=$(DESTDIR)/usr/local
 
 RM= rm -f
 CP= cp
@@ -14,14 +15,17 @@ sharedir= ${prefix}/share/picsimlab/
 
 #lxrad automatic generated block start, don't edit below!
 
-LIBPATH  ?= ../../
+LIBPATH  ?= ../../build_all
 
 FLAGS= -D_VERSION_=\"$(VERSION)\" -D_SHARE_=\"${sharedir}\" -Wall -O2 -DLINUX `wx-config --cxxflags`
 FLAGS+= -DEXT_BROWSER
 FLAGS+= -I../$(LIBPATH)/lxrad/include/  -flto=auto
+FLAGS+= -D_APPLE_
+FLAGS+= `lxrad-config --cxxflags`
 
-LIBS=  ../$(LIBPATH)/lxrad/lib/liblxrad.a \
-       ../$(LIBPATH)/lunasvg/build/liblunasvg.a \
+
+LIBS=  $(LIBPATH)/lxrad/lib/liblxrad.a \
+       $(LIBPATH)/lunasvg/build/liblunasvg.a \
        `wx-config --libs` `wx-config --libs stc` 
 
 OBJS = pespmsim.o espmsim1.o espmsim2.o serial.o tcp.o

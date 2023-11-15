@@ -50,12 +50,12 @@ install: all
 	$(CP) -drvf ../lib/* ${libdir}
 	$(CP) -dvf picsimlab ${execdir}
 	strip ${execdir}picsimlab	
-#	xdg-icon-resource install --size 64  --novendor ../share/picsimlab.png 
-#	xdg-icon-resource install --context mimetypes --size 64 ../share/application-x-picsimlab-workspace.png application-x-picsimlab-workspace
-#	xdg-mime install --mode system ../share/application-x-picsimlab-workspace.xml
-#	xdg-mime default picsimlab.desktop application/x-picsimlab-workspace
-#	update-mime-database /usr/share/mime &
-#	update-desktop-database ${appdir} &
+	xdg-icon-resource install --size 64  --novendor ../share/picsimlab.png 
+	xdg-icon-resource install --context mimetypes --size 64 ../share/application-x-picsimlab-workspace.png application-x-picsimlab-workspace
+	xdg-mime install --mode system ../share/application-x-picsimlab-workspace.xml
+	xdg-mime default picsimlab.desktop application/x-picsimlab-workspace
+	update-mime-database /usr/share/mime &
+	update-desktop-database ${appdir} &
 
 install_app: all
 	install -d $(execdir) $(sharedir) ${libdir} $(appdir) ${sharedir}/../icons/hicolor/64x64/apps/ \

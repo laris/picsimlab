@@ -19,10 +19,12 @@ brew install -q glib # for gpsim headers
 brew tap osx-cross/homebrew-avr # for simavr
 brew install -q avrdude avr-binutils avr-gcc@12 libelf
 
+cl pwd
 cl mkdir -p build_all
 cd build_all
+cl pwd
 echo -e "\033[1;32m ---------------------- download deps -------------------------------------\033[0m"
-git clone --depth=1 https://github.com/lcgamboa/picsim.git
+#git clone --depth=1 https://github.com/lcgamboa/picsim.git
 git clone --depth=1 https://github.com/lcgamboa/lxrad.git
 #git clone --depth=1 https://github.com/lcgamboa/tty0tty.git
 git clone --depth=1 https://github.com/lcgamboa/simavr.git
@@ -38,7 +40,9 @@ echo -e "\033[1;32m ---------------------- build and install picsim ------------
 #cl sudo make install
 #cd ..
 echo -e "\033[1;32m ---------------------- build and install lxrad -------------------------- \033[0m"
+cl pwd
 cd lxrad
+cl pwd
 git pull --no-rebase
 cl cp -f ../../lxrad-patch-files/Makefile.in lib/Makefile.in
 cl cp -f ../../lxrad-patch-files/lxaudio.h include/lxaudio.h
@@ -48,13 +52,15 @@ cl ./make_deps.sh
 cl ./configure --prefix=/usr/local CC="g++ -std=c++17" CXX="g++ -std=c++17" LDFLAGS="-D_APPLE_ -framework OpenAL"
 cl make clean;make -j$(sysctl -n hw.ncpu)
 cl make install
-cl cd lib
-cl cp -Pvf liblxrad*.dylib /usr/local/lib/
-cd .. # lxrad
+#cl rm -rf /usr/local/lib/liblxrad.*
+#cl cp -dvf lib/liblxrad.* /usr/local/lib/ #coreutils cp work with cp -dvf now
+#cd .. # lxrad
 cd .. # build_all
+cl pwd
 echo -e "\033[1;32m ---------------------- build and install tty0tty ------------------------ \033[0m"
 #cd tty0tty/module
-cl cd .. #back to main folder
+cd .. #back to main folder
+cl pwd
 cd tty0tty/pts
 #git pull --no-rebase
 cl make
@@ -65,14 +71,19 @@ cl cp tty0tty /usr/local/bin/
 #sudo usermod -a -G dialout `whoami`
 #cl sudo modprobe tty0tty
 cd ../../ # back to main folder
+cl pwd
 cd build_all
+cl pwd
 echo -e "\033[1;32m ---------------------- build and install simavr ------------------------- \033[0m"
 cd simavr
+cl pwd
 git pull --no-rebase
-cl make clean;make build-simavr -j$(sysctl -n hw.ncpu) 
+cl make clean; PATH=$PATH:"/usr/local/opt/avr-gcc@12/bin" make build-simavr -j$(sysctl -n hw.ncpu) 
 cl make install-simavr
 cd ../ # back to build_all
+cl pwd
 echo -e "\033[1;32m ---------------------- build and install uCsim -------------------------- \033[0m"
+cl pwd
 #cd uCsim_picsimlab
 #git pull --no-rebase
 #cl ./config_linux.sh
@@ -81,7 +92,9 @@ echo -e "\033[1;32m ---------------------- build and install uCsim -------------
 #cl make clean;make -j$(sysctl -n hw.ncpu)
 #cl make install
 #cd ../../
+cl pwd
 echo -e "\033[1;32m ---------------------- build qemu  ---------------------- \033[0m"
+cl pwd
 #cd qemu
 #cl git checkout picsimlab-stm32
 #git pull --no-rebase
@@ -102,10 +115,21 @@ echo -e "\033[1;32m ---------------------- build qemu  ---------------------- \0
 #cl install -d ../../lib/qemu/fw
 #cl cp pc-bios/esp32-v3-rom*.bin pc-bios/esp32c3-rom.bin ../../lib/qemu/fw/
 #cd ..
+cl pwd
 echo -e "\033[1;32m ---------------------- build and install picsimlab ---------------------- \033[0m"
+cl pwd
 #git pull --no-rebase
-cd ../
+cd ../ # back to main
+cl pwd
+cd src
 cl make clean;make -j$(sysctl -n hw.ncpu) -f Makefile.static
+cl make install_app
+cl pwd
+cd ../ # back to main
+# compile tools
+cl make clean; make -j$(sysctl -n hw.ncpu)
+cl make install_app
+cl pwd
 #cl make install
 #user=`whoami`
 #cl sudo usermod -a -G dialout $user
@@ -113,5 +137,5 @@ echo -e "\033[1;32m ---------------------- done! -------------------------------
 echo -e "\033[1;32m logout your session and login to use serial \033[0m"
 #sudo ldconfig
 #if xhost > /dev/null 2>&1 ; then
-cl picsimlab
+#cl picsimlab
 #fi

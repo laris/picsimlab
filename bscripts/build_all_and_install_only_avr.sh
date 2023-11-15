@@ -13,8 +13,8 @@ echo -e "\033[1;32m ---------------------- update and install packages ---------
 # cl sudo apt-get -y install linux-headers-`uname -r` dkms 
 # enable homebrew install pkgs
 #brew install openal-soft wxwidgets gpsim
-brew install cmake pkg-config 
-brew install wxwidgets doxgen
+brew install cmake pkg-config coreutils #coreutils to use gnu cp for installation
+brew install wxwidgets doxgen # for GUI
 brew install glib # for gpsim headers
 brew tap osx-cross/homebrew-avr # for simavr
 brew install avrdude avr-binutils avr-gcc@12 libelf

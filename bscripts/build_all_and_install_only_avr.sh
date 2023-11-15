@@ -13,7 +13,11 @@ echo -e "\033[1;32m ---------------------- update and install packages ---------
 # cl sudo apt-get -y install linux-headers-`uname -r` dkms 
 # enable homebrew install pkgs
 #brew install openal-soft wxwidgets gpsim
-brew install wxwidgets 
+brew install cmake pkg-config 
+brew install wxwidgets doxgen
+brew install glib # for gpsim headers
+brew tap osx-cross/homebrew-avr # for simavr
+brew install avrdude avr-binutils avr-gcc@12 libelf
 
 cl mkdir build_all
 cd build_all
@@ -41,11 +45,15 @@ cl ./make_deps.sh
 cl ./configure --prefix=/usr/local CC="g++ -std=c++17" CXX="g++ -std=c++17" LDFLAGS="-D_APPLE_ -framework OpenAL"
 cl make clean;make -j$(sysctl -n hw.ncpu)
 cl make install
-cd ..
+cl cd lib
+cl cp -Pvf liblxrad*.dylib /usr/local/lib/
+cd .. # lxrad
+cd .. # build_all
 echo -e "\033[1;32m ---------------------- build and install tty0tty ------------------------ \033[0m"
 #cd tty0tty/module
 cd tty0tty/pts
 git pull --no-rebase
+cl make
 cl cp tty0tty /usr/local/bin/
 #cl sudo ./dkms-install.sh
 #cl make clean;make -j$(sysctl -n hw.ncpu)

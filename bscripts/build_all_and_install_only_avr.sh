@@ -13,26 +13,26 @@ echo -e "\033[1;32m ---------------------- update and install packages ---------
 # cl sudo apt-get -y install linux-headers-`uname -r` dkms 
 # enable homebrew install pkgs
 #brew install openal-soft wxwidgets gpsim
-brew install cmake pkg-config coreutils #coreutils to use gnu cp for installation
-brew install wxwidgets doxgen # for GUI
-brew install glib # for gpsim headers
+brew install -q cmake pkg-config coreutils #coreutils to use gnu cp for installation
+brew install -q wxwidgets doxgen # for GUI
+brew install -q glib # for gpsim headers
 brew tap osx-cross/homebrew-avr # for simavr
-brew install avrdude avr-binutils avr-gcc@12 libelf
+brew install -q avrdude avr-binutils avr-gcc@12 libelf
 
-cl mkdir build_all
+cl mkdir -p build_all
 cd build_all
 echo -e "\033[1;32m ---------------------- download deps -------------------------------------\033[0m"
 git clone --depth=1 https://github.com/lcgamboa/picsim.git
 git clone --depth=1 https://github.com/lcgamboa/lxrad.git
-git clone --depth=1 https://github.com/lcgamboa/tty0tty.git
+#git clone --depth=1 https://github.com/lcgamboa/tty0tty.git
 git clone --depth=1 https://github.com/lcgamboa/simavr.git
 #git clone --depth=1 https://github.com/lcgamboa/uCsim_picsimlab.git
 #cl sudo apt-get -y install python3 libglib2.0-dev libpixman-1-dev libfdt-dev gpsim-dev gpsim \
 #ninja-build meson libgcrypt-dev libslirp-dev
 #git clone --depth=1 --no-single-branch https://github.com/lcgamboa/qemu.git	
 echo -e "\033[1;32m ---------------------- build and install picsim ------------------------- \033[0m"
-cd picsim
-ln -sf include picsim
+#cd picsim
+#ln -sf include picsim
 #cl git pull --no-rebase
 #cl make clean;make -j$(sysctl -n hw.ncpu)
 #cl sudo make install
@@ -40,6 +40,9 @@ ln -sf include picsim
 echo -e "\033[1;32m ---------------------- build and install lxrad -------------------------- \033[0m"
 cd lxrad
 git pull --no-rebase
+cl cp -f ../../lxrad-patch-files/Makefile.in lib/Makefile.in
+cl cp -f ../../lxrad-patch-files/lxaudio.h include/lxaudio.h
+cl cp -f ../../lxrad-patch-files/lxaudio.cc lib/lxaudio.cc
 cl ./make_deps.sh
 #cl ./configure --prefix=/usr/local
 cl ./configure --prefix=/usr/local CC="g++ -std=c++17" CXX="g++ -std=c++17" LDFLAGS="-D_APPLE_ -framework OpenAL"
@@ -51,8 +54,9 @@ cd .. # lxrad
 cd .. # build_all
 echo -e "\033[1;32m ---------------------- build and install tty0tty ------------------------ \033[0m"
 #cd tty0tty/module
+cl cd .. #back to main folder
 cd tty0tty/pts
-git pull --no-rebase
+#git pull --no-rebase
 cl make
 cl cp tty0tty /usr/local/bin/
 #cl sudo ./dkms-install.sh
@@ -60,13 +64,14 @@ cl cp tty0tty /usr/local/bin/
 #cl sudo make install
 #sudo usermod -a -G dialout `whoami`
 #cl sudo modprobe tty0tty
-cd ../../
+cd ../../ # back to main folder
+cd build_all
 echo -e "\033[1;32m ---------------------- build and install simavr ------------------------- \033[0m"
 cd simavr
 git pull --no-rebase
 cl make clean;make build-simavr -j$(sysctl -n hw.ncpu) 
 cl make install-simavr
-cd ../
+cd ../ # back to build_all
 echo -e "\033[1;32m ---------------------- build and install uCsim -------------------------- \033[0m"
 #cd uCsim_picsimlab
 #git pull --no-rebase
@@ -101,7 +106,7 @@ echo -e "\033[1;32m ---------------------- build and install picsimlab ---------
 #git pull --no-rebase
 cd ../
 cl make clean;make -j$(sysctl -n hw.ncpu) -f Makefile.static
-cl make install
+#cl make install
 #user=`whoami`
 #cl sudo usermod -a -G dialout $user
 echo -e "\033[1;32m ---------------------- done! -------------------------------------------- \033[0m"

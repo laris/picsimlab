@@ -2,7 +2,7 @@ include ../../VERSION
 
 CC = g++
 
-DESTDIR ?= /usr
+DESTDIR ?= /usr/local
 prefix = $(DESTDIR)
 
 RM= rm -f
@@ -17,8 +17,9 @@ sharedir= ${prefix}/share/picsimlab/
 
 FLAGS =  -D_VERSION_=\"$(VERSION)\" -D_SHARE_=\"${sharedir}\"  -Wall -g -O2 `lxrad-config --cxxflags`
 FLAGS+= -D_ARCH_=\"Linux64_WX\" -D_DATE_=\"${DATE}\" -flto=auto
+FLAGS+= -D_APPLE_
 
-LIBS = `lxrad-config --libs`  
+LIBS = `lxrad-config --libs` -framework OpenAL
 
 OBJS = pPinViewer.o PinViewer1.o 
 

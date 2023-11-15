@@ -148,7 +148,7 @@ int bsim_remote::MInit(const char* processor, const char* fname, float freq) {
         strncpy(serv.sun_path + 1, "picsimlab_qemu", sizeof(serv.sun_path) - 2);
 #endif
 
-        if (bind(listenfd, (sockaddr*)&serv, sizeof(serv))) {
+        if (::bind(listenfd, (sockaddr*)&serv, sizeof(serv))) {
             printf("picsimlab: remote bind error : %s \n", strerror(errno));
             exit(1);
         }

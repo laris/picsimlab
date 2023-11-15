@@ -1,10 +1,10 @@
 include Makefile.Common
 
-CXX = g++
+CXX = g++ -std=c++17
 
 PKG_CONFIG= `pkg-config --cflags glib-2.0` 
 
-prefix=$(DESTDIR)/usr
+prefix=$(DESTDIR)/usr/local
 
 RM= rm -f
 CP= cp
@@ -17,23 +17,32 @@ execdir= ${prefix}/bin/
 
 #lxrad automatic generated block start, don't edit below!
 
-LIBPATH  ?= ../../
+LIBPATH  ?= ../build_all
 
 override CXXFLAGS+=  -I$(LIBPATH)/picsim/include/ -I$(LIBPATH)/lxrad/include/ \
        -I$(LIBPATH)/simavr/simavr/sim/ -I$(LIBPATH)/uCsim_picsimlab/picsimlab/ 
 
 override CXXFLAGS+= -D_ARCH_=\"Linux64_WX\" -D_DATE_=\"${DATE}\"
 override CXXFLAGS+= -D_VERSION_=\"$(VERSION)\" -Wall -O2 -D_SHARE_=\"../share/picsimlab/\" \
--D_LIB_=\"../lib/picsimlab/\" `wx-config --cxxflags`
+                    -D_LIB_=\"../lib/picsimlab/\" `wx-config --cxxflags`
 override CXXFLAGS+= -DEXT_BROWSER -flto=auto 
 #override CXXFLAGS+=-fsanitize=address
-
+override CXXFLAGS+= -D_LIBCPP_HAS_NO_OFF_T_FUNCTIONS
+override CXXFLAGS+= -D_DARWIN_C_SOURCE
+override CXXFLAGS+= `lxrad-config --cflags`
+override CXXFLAGS+= -D_APPLE_
+override CXXFLAGS+= -I.
 
 LIBS=  $(LIBPATH)/picsim/src/libpicsim.a $(LIBPATH)/lxrad/lib/liblxrad.a \
-       $(LIBPATH)/simavr/simavr/obj-x86_64-linux-gnu/libsimavr.a \
+       $(LIBPATH)/simavr/simavr/obj-x86_64-apple-darwin23.1.0/libsimavr.a \
        $(LIBPATH)/lunasvg/build/liblunasvg.a \
-       $(LIBPATH)/uCsim_picsimlab/picsimlab/libucsim.a \
-      -lopenal `wx-config --libs` `wx-config --libs stc` -ldl -lgpsim
+       `wx-config --libs` `wx-config --libs stc` -ldl \
+			 -framework OpenAL
+			 #`lxrad-config --libs` -framework OpenAL
+       #-lopenal `wx-config --libs` `wx-config --libs stc` -ldl \
+ 			 #-lgpsim
+       #$(LIBPATH)/uCsim_picsimlab/picsimlab/libucsim.a \
+       #$(LIBPATH)/simavr/simavr/obj-x86_64-linux-gnu/libsimavr.a \
 
 #lxrad automatic generated block end, don't edit above!
 

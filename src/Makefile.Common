@@ -5,8 +5,13 @@ PKG ?= "native"
 OBJS = ppicsimlab.o picsimlab1.o picsimlab2.o picsimlab3.o picsimlab4.o picsimlab5.o  
 
 OBJS+= $(patsubst lib/%.cc,lib/%.o,$(wildcard lib/*.cc)) 
-OBJS+= $(patsubst boards/%.cc,boards/%.o,$(wildcard boards/bsim*.cc)) 
-OBJS+= $(patsubst boards/%.cc,boards/%.o,$(wildcard boards/board*.cc)) 
+#OBJS+= $(patsubst boards/%.cc,boards/%.o,$(wildcard boards/bsim*.cc))
+#OBJS+= $(patsubst boards/%.cc,boards/%.o,$(wildcard boards/board*.cc))
+OBJS+= boards/bsim_simavr.o # simavr backend
+OBJS+= boards/board_Arduino_Mega.o
+OBJS+= boards/board_Arduino_Nano.o
+OBJS+= boards/board_Arduino_Uno.o
+OBJS+= boards/board_Franzininho_DIY.o
 OBJS+= boards/bridge_gpsim.o
 OBJS+= $(patsubst devices/%.cc,devices/%.o,$(filter-out devices/prog_psp.cc,$(wildcard devices/*.cc)))
 OBJS+= $(patsubst parts/%.cc,parts/%.o,$(wildcard parts/part*.cc))

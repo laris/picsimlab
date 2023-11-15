@@ -2,7 +2,7 @@ include ../../VERSION
 
 CC = g++
 
-DESTDIR ?= /usr
+DESTDIR ?= /usr/local
 prefix = $(DESTDIR)
 
 RM= rm -f
@@ -17,6 +17,7 @@ sharedir= ${prefix}/share/picsimlab/
 
 FLAGS =  -D_VERSION_=\"$(VERSION)\" -D_SHARE_=\"${sharedir}\"  -Wall -g -O2 `lxrad-config --cxxflags`
 FLAGS+= -DEXT_BROWSER -flto=auto
+FLAGS+= -D_APPLE_
 
 LIBS = `lxrad-config --libs`  
 

@@ -129,7 +129,7 @@ int rcontrol_init(const unsigned short tcpport, const int reporterror) {
         serv.sin_addr.s_addr = htonl(INADDR_ANY);
         serv.sin_port = htons(tcpport);
 
-        if (bind(listenfd, (sockaddr*)&serv, sizeof(serv))) {
+        if (::bind(listenfd, (sockaddr*)&serv, sizeof(serv))) {
             if (reporterror) {
                 printf("rcontrol: bind error : %s \n", strerror(errno));
                 PICSimLab.RegisterError(
